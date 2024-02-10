@@ -1,0 +1,14 @@
+#map {
+  width: 100dvw ;
+  height: calc(100dvh - 4rem);
+}
+.balloon{
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem
+}
+
+.ymaps-2-1-79-copyrights-pane {
+  display: none;
+}

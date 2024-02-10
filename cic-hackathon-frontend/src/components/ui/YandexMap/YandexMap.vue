@@ -1,13 +1,30 @@
 <script setup>
 import ymaps from 'ymaps'
 import {onMounted} from "vue";
+import axios from 'axios'
+
+const getMarkers = async () => {
+  try {
+    const response = await axios.get("/api/markers", {
+      headers: {
+        "ngrok-skip-browser-warning": "69420"
+      }
+    });
+
+    // Process the response data
+    return response.data
+  } catch (error) {
+    // Handle the error
+    console.error("Error fetching data:", error.message);
+  }
+}
 const initMap = () => {
   ymaps
       .load(`https://api-maps.yandex.ru/2.1/?apikey=122d180f-61ee-4bcc-bb14-2832b1a6107b&lang=en_US`)
       .then(maps => {
         let map = new maps.Map('map', {
-          center: [46.190629, 36.822734],
-          zoom: 6
+          center: [47.1078, 39.4165],
+          zoom: 10
         })
         map.controls.remove('zoomControl')
         map.controls.remove('geolocationControl')
@@ -15,14 +32,35 @@ const initMap = () => {
         map.controls.remove('trafficControl')
         map.controls.remove('typeSelector')
         map.controls.remove('searchControl')
+        map.controls.remove('fullscreenControl')
+        getMarkers().then(res => {
+          res.forEach((marker) => {
+            let placemark = new maps.Placemark([marker.latitude, marker.longitude], {
+              balloonContent: `
+            <div class="balloon">
+                <div class="balloon-header">
+                    <h3>${marker.description}</h3>
+                </div>
+                <div class="balloon-content">
+                    <p>Выложено пользователем ${marker.userCreatedId}</p>
+                    <router-link to="/place/1">link to place</router-link>
+                </div>
+            </div>
+          `
+            }, {
+              iconLayout: 'default#image',
+              iconImageHref: 'https://cdn-icons-png.flaticon.com/512/6387/6387773.png',
+              iconImageSize: [40, 40]
+            });
+            map.geoObjects.add(placemark)
 
-        let placemark = new maps.Placemark( [46.190629, 36.822734], {}, {
-
+          })
         })
       })
       .catch(error => {
         console.error('Failed to load Yandex Maps:', error);
       });
+
 }
 onMounted(() => {
   initMap();
@@ -39,6 +77,6 @@ onMounted(() => {
 <style scoped>
 #map {
   width: 100dvw ;
-  height: 400px; /* Adjust the height as needed */
+  height: calc(100dvh - 4rem);
 }
 </style>

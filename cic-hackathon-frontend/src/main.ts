@@ -2,6 +2,7 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
+import "@/axios.config.js"
 import './assets/scss/main.scss'
 
 import App from './App.vue'
