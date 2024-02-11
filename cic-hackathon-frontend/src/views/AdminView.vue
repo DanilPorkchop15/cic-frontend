@@ -151,8 +151,9 @@
       <div class="categories-list">
         <div class="categories-list__item" v-for="(category, index) in categoryData" :key="category.id" v-if="categoryData">
           <div class="category-item" >
-            <p>Название категории: {{category.name}}</p>
             <button class="item__delete" @click="deleteCategory(category.id)">✕</button>
+
+            <p>Название категории: {{category.name}}</p>
           </div>
         </div>
         <form action="" class="add-category" @submit.prevent="addCategory(categoryName)">
