@@ -1,7 +1,9 @@
-<script setup>
+<script setup >
   import axios from "axios";
   import {onBeforeMount, onMounted, ref} from "vue";
+  import {useUserStore} from "@/stores/user.ts";
 
+  const store = useUserStore();
   const getMarkers = async () => {
     try {
       const response = await axios.get("/api/markers");
@@ -16,7 +18,12 @@
 
   const deleteMarkers = async (markersId) => {
     try{
-      const response = await axios.delete(`/api/markers/?id=${markersId}`)
+      await axios.delete(`/api/markers/?id=${markersId}`, {
+        headers: {
+          "Authorization": `Bearer ${sessionStorage.getItem("jwt")}`
+        }
+      })
+      markersData.value.filter(item => item.id !== markersId)
     } catch (error) {
       // Handle the error
       console.error("Error deleting data:", error.message);
