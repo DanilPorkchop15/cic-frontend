@@ -1,9 +1,7 @@
 .admin-page__wrapper {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f4f4f4;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
 .admin-page {
@@ -11,6 +9,8 @@
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  margin-top: 20px; /* Add top margin */
 }
 
 .admin-page__title {
@@ -18,22 +18,27 @@
   margin-bottom: 20px;
 }
 
-.markers-list {
+.markers-list,
+.categories-list {
   display: flex;
-  flex-wrap: wrap; /* Allow items to wrap to the next line */
+  flex-wrap: wrap;
   gap: 20px;
+  width: 100%;
 }
 
-.markers-list__item {
+.markers-list__item,
+.categories-list__item {
   background-color: #fff;
   padding: 15px;
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  width: 100%; /* Make the item span the full width */
+  width: calc(50% - 10px);
+  margin-bottom: 20px;
 }
 
-.marker-item {
+.marker-item,
+.category-item {
   position: relative;
 }
 
@@ -48,14 +53,4 @@
   padding: 5px;
   cursor: pointer;
   font-size: 1rem;
-}
-
-.item__figure {
-  margin-top: 10px;
-}
-
-.item__img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
 }

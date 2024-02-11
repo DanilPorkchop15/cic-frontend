@@ -5,7 +5,6 @@ import MyHeader from "@/components/ui/MyHeader/MyHeader.vue";
 
 <template>
   <main>
-    <MyHeader/>
     <router-view/>
   </main>
 </template>

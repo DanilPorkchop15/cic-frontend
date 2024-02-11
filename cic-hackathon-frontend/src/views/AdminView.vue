@@ -1,6 +1,6 @@
 <script setup >
   import axios from "axios";
-  import {onBeforeMount, onMounted, ref, watch} from "vue";
+  import {onBeforeMount, onMounted, ref} from "vue";
   import {useUserStore} from "@/stores/user.ts";
   import {useRouter} from "vue-router";
 
