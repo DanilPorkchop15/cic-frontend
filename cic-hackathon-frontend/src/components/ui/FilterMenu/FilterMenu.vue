@@ -1,41 +1,58 @@
-<template>
-  <div class="filter-menu">
-    <h3 class="filter-menu__header">Меню фильтрации</h3>
-    <div class="filters">
-      <div class="filters__item">
-        <div class="filter__header" @click="toggleFilter('date')">
-          <h4>Период данных</h4>
-          <span class="filter__toggle-icon">{{ filters.date ? '▼' : '►' }}</span>
-        </div>
-        <div class="filter__body" v-show="filters.date">
-          <!-- Здесь добавьте содержимое фильтра по дате -->ччч
-        </div>
-      </div>
-      <div class="filters__item">
-        <div class="filter__header" @click="toggleFilter('type')">
-          <h4>Тип отметки</h4>
-          <span class="filter__toggle-icon">{{ filters.type ? '▼' : '►' }}</span>
-        </div>
-        <div class="filter__body" v-show="filters.type">
-          <!-- Здесь добавьте содержимое фильтра по типу отметки -->ччч
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
-import { ref } from 'vue';
+import {onMounted, ref} from 'vue';
+import axios from "axios";
+
+const categoryData = ref([])
+const getCategory = async () => {
+  try {
+    const response = await axios.get("/api/status");
+
+    // Process the response data
+    categoryData.value = response.data
+    return response.data
+  } catch (error) {
+    // Handle the error
+    console.error("Error fetching data:", error.message);
+  }
+}
 
 const filters = ref({
   date: true,
   type: true,
 });
 
-const toggleFilter = (filter: unknown) => {
-  filters.value[filter] = !filters.value[filter];
-};
+onMounted(() => {
+  getCategory()
+})
 </script>
+
+<template>
+  <div class="filter-menu">
+    <h3 class="filter-menu__header">Меню фильтрации</h3>
+    <div class="filters">
+      <div class="filters__item">
+        <div class="filter__header" @click="filters.date = !filters.date">
+          <h4>Период данных</h4>
+          <span class="filter__toggle-icon">{{ filters.date ? '▼' : '►' }}</span>
+        </div>
+        <div class="filter__body" v-if="filters.date">
+          <!-- Здесь добавьте содержимое фильтра по дате -->ччч
+        </div>
+      </div>
+      <div class="filters__item">
+        <div class="filter__header" @click="filters.type = !filters.type">
+          <h4>Тип отметки</h4>
+          <span class="filter__toggle-icon">{{ filters.type ? '▼' : '►' }}</span>
+        </div>
+        <div class="filter__body" v-if="filters.type">
+          <div class="" v-for="category in categoryData" :key="category.id" v-if="categoryData">
+            {{category.name}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
 
 <style scoped>
 .filter-menu {
@@ -79,11 +96,5 @@ const toggleFilter = (filter: unknown) => {
   font-size: 8pt;
 }
 
-.filter__body {
-  display: none;
-}
 
-.filter__body.show {
-  display: block;
-}
 </style>

@@ -128,20 +128,25 @@
       <div class="markers-list">
         <div class="markers-list__item" v-for="(marker, index) in markersData" :key="marker.id">
           <div class="marker-item">
-            <p class="item__description" v-if="marker.description">Описание: {{ marker.description }}</p>
-            <p class="item__city" v-if="marker.city">Город: {{ marker.city }}</p>
-            <div class="item__coords" v-if="marker.latitude && marker.longitude">
-              <p class="item__latitude">Ширита: {{ marker.latitude }}</p>
-              <p class="item__longitude">Долгота: {{ marker.longitude }}</p>
+            <div class="item__content">
+              <div class="item__info"><p class="item__description" v-if="marker.description">Описание: {{ marker.description }}</p>
+                <p class="item__city" v-if="marker.city">Город: {{ marker.city }}</p>
+                <div class="item__coords" v-if="marker.latitude && marker.longitude">
+                  <p class="item__latitude">Ширита: {{ marker.latitude }}</p>
+                  <p class="item__longitude">Долгота: {{ marker.longitude }}</p>
+                </div>
+              </div>
+              <figure class="item__figure" v-if="marker.image">
+                <img :src="`data:image/png;base64,${marker.image}`" :alt="marker.description" class="item__img">
+              </figure>
+              <div class="item__check"><label><input type="checkbox" name="isRepair" id="isRepair"
+                                                     @change.stop="updateRepair(marker.isRepair, marker.id)"
+                                                     v-model="marker.isRepair"> Ремонт идет</label>
+                <label><input type="checkbox" name="isValidate" id="isValidate"
+                              @change.stop="updateValidate(marker.isValidate, marker.id)"
+                              v-model="marker.isValidate"> Валидно</label></div>
             </div>
-            <figure class="item__figure" v-if="marker.image">
-              <img :src="marker.image" :alt="marker.description" class="item__img">
-            </figure>
-            <label><input type="checkbox" name="isRepair" id="isRepair" @change.stop="updateRepair(marker.isRepair, marker.id)"
-                          v-model="marker.isRepair"> Ремонт идет</label>
-            <label><input type="checkbox" name="isValidate" id="isValidate" @change.stop="updateValidate(marker.isValidate, marker.id)"
-                          v-model="marker.isValidate"> Валидно</label>
-            <button class="item__delete" @click="deleteMarkers(marker.id)">✕</button>
+              <button class="item__delete" @click="deleteMarkers(marker.id)">✕</button>
           </div>
         </div>
       </div>

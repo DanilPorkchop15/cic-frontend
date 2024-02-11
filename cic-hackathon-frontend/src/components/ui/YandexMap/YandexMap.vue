@@ -14,8 +14,8 @@ const getMarkers = async () => {
     console.error("Error fetching data:", error.message);
   }
 }
-const initMap = () => {
-  ymaps
+const initMap = async () => {
+  await ymaps
       .load(`https://api-maps.yandex.ru/2.1/?apikey=122d180f-61ee-4bcc-bb14-2832b1a6107b&lang=en_US`)
       .then(maps => {
         let map = new maps.Map('map', {
@@ -32,6 +32,7 @@ const initMap = () => {
         getMarkers().then(res => {
           res.forEach((marker) => {
             if (marker.isValidate) {
+              const markerDate = new Date(marker.dateCreated)
               let placemark = new maps.Placemark([marker.latitude, marker.longitude], {
                 balloonContent: `
   <div class="balloon">
@@ -46,6 +47,8 @@ const initMap = () => {
       <p>Чинится: ${marker.isRepair ? "Да" : "Нет"}</p>
       <p v-if="${marker.city}">Город: ${marker.city}</p>
       <p v-if="${marker.userCreatedId}">Выложено пользователем ${marker.userCreatedId}</p>
+      <p v-if="${marker.userCreatedId}">Метка создана: ${markerDate.getDate()}.${markerDate.getMonth() + 1}.${markerDate.getFullYear()}</p>
+
     </div>
   </div>
           `

@@ -44,6 +44,9 @@
 .marker-item,
 .category-item {
   position: relative;
+  display: flex;
+  gap: 0.5rem;
+
 }
 
 .item__delete {
@@ -51,7 +54,7 @@
   top: 50%;
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
-  right: 0%;
+  right: 0;
   float: right;
   width: 24pt;
   height: 24pt;
@@ -62,4 +65,45 @@
   //padding: 5px;
   cursor: pointer;
   font-size: 1rem;
+}
+
+.add-category{
+  border: 1px solid #ddd;
+  padding: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  &__name{
+    width: 90%;
+  }
+  &__button{
+    background-color: darkseagreen;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    margin-right: 6px;
+    color: white;
+  }
+}
+.item__img{
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  height: 25dvh;
+  border-radius: 8px;
+}
+
+.item__check{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.item__content{
+  display: flex;
+  width: 90%;
+  align-items: center;
+}
+.item__info{
+  width: 33%;
+}
+.item__figure{
+  width: 33%;
 }

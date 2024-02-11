@@ -1,14 +1,23 @@
 <script setup >
 
-import {reactive} from "vue";
+import {onBeforeMount, reactive} from "vue";
 import { useUserStore } from "@/stores/user";
+import {useRouter} from "vue-router";
 
+const router = useRouter();
 const store = useUserStore();
 
 const user = reactive({
   username: '',
   password: '',
 });
+
+onBeforeMount(() => {
+  if(sessionStorage.getItem("jwt")){
+    router.push('/admin')
+  }
+})
+
 </script>
 
 <template>
