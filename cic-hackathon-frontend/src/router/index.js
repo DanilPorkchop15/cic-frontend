@@ -7,13 +7,11 @@ const router = createRouter({
     {
       path: '/admin',
       name: 'admin',
-      // @ts-ignore
       component: () => import('../views/AdminView.vue')
     },
     {
       path: '/login',
       name: 'login',
-      // @ts-ignore
       component: () => import('../views/AuthorisationView.vue')
     },
     {

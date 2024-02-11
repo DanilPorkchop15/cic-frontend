@@ -1,5 +1,5 @@
-<script setup lang="ts">
-import {onMounted, ref, watch} from 'vue';
+<script setup>
+import {onMounted, ref} from 'vue';
 import axios from "axios";
 import {useCategoryStore} from "@/stores/category.ts";
 
@@ -49,7 +49,7 @@ onMounted(() => {
           <span class="filter__toggle-icon">{{ filters.type ? '▼' : '►' }}</span>
         </div>
         <div class="filter__body" v-if="filters.type">
-          <div class=""v-if="categoryData">
+          <div class="" v-if="categoryData">
             <label><input type="radio" checked name="category" id="filter__radio" class="filter__radio" @change="store.setFilter(true)">Показывать все</label>
           </div>
           <div class="" v-for="category in categoryData" :key="category.id" v-if="categoryData">

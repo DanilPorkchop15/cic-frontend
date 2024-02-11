@@ -1,6 +1,6 @@
-<script setup>
+<script setup >
 import ymaps from 'ymaps'
-import {onMounted, ref, watch} from "vue";
+import {onMounted, watch} from "vue";
 import axios from 'axios'
 import {useCategoryStore} from "@/stores/category.ts";
 
