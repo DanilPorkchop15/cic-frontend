@@ -66,6 +66,21 @@
         </div>
       </div>
     </main>
+    <main class="admin-page">
+      <h3 class="admin-page__title">Категории</h3>
+      <div class="categories-list">
+        <div class="categories-list__item" v-for="(category, index) in markersData" :key="category.id">
+          <div class="category-item">
+
+            <button class="item__delete" @click="deleteMarkers(category.id, index)">✕</button>
+          </div>
+        </div>
+        <form action="" class="add-category" @submit.prevent="addCategory">
+          <input type="text" name="newCategory" id="newCategory" class="add-category__name" placeholder="Введите название категории"/>
+          <input type="submit" value="+" class="add-category__button"/>
+        </form>
+      </div>
+    </main>
   </div>
 </template>
 
