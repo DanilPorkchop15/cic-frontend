@@ -11,6 +11,7 @@
       const response = await axios.get("/api/markers");
 
       // Process the response data
+      markersData.value = response.data
       return response.data
     } catch (error) {
       // Handle the error
@@ -22,6 +23,7 @@
       const response = await axios.get("/api/status");
 
       // Process the response data
+      categoryData.value = response.data
       return response.data
     } catch (error) {
       // Handle the error
@@ -29,27 +31,52 @@
     }
   }
 
-  const deleteMarkers = async (markersId, index) => {
+  const deleteMarkers = async (markersId) => {
     try{
       await axios.delete(`/api/markers/?id=${markersId}`, {
         headers: {
           "Authorization": `Bearer ${sessionStorage.getItem("jwt")}`
         }
       })
-      markersData.value.splice(index, 1)
+      markersData.value.push(1)
     } catch (error) {
       // Handle the error
       console.error("Error deleting data:", error.message);
     }
   }
-  const deleteCategory = async (categoryId, index) => {
+
+  const updateRepair = async (isRepair, markersId) => {
+    try{
+      await axios.put(`/api/markers/repair/?id=${markersId}&repair=${isRepair}`, {},{
+        headers: {
+          "Authorization": `Bearer ${sessionStorage.getItem("jwt")}`
+        }
+      })
+    } catch (error) {
+      // Handle the error
+      console.error("Error updating data:", error.message);
+    }
+  }
+
+  const updateValidate = async (isRepair, markersId) => {
+    try{
+      await axios.put(`/api/markers/validate/?id=${markersId}&validate=${isRepair}`,{}, {
+        headers: {
+          "Authorization": `Bearer ${sessionStorage.getItem("jwt")}`
+        }
+      })
+    } catch (error) {
+      // Handle the error
+      console.error("Error updating data:", error.message);
+    }
+  }
+  const deleteCategory = async (categoryId) => {
     try{
       await axios.delete(`/api/status/?id=${categoryId}`, {
         headers: {
           "Authorization": `Bearer ${sessionStorage.getItem("jwt")}`
         }
       })
-      categoryData.value.splice(index, 1)
     } catch (error) {
       // Handle the error
       console.error("Error deleting data:", error.message);
@@ -58,13 +85,17 @@
   const categoryData = ref([])
   const categoryName = ref("")
 
-  const addCategory = async () => {
+  const addCategory = async (categoryName) => {
     try{
-      await axios.post(`/api/status`)
-      markersData.value.splice(index, 1)
+      await axios.post(`/api/status`, {name: categoryName}, {
+        headers: {
+          "Authorization": `Bearer ${sessionStorage.getItem("jwt")}`
+        }
+      })
+      categoryData.value.push({name: categoryName, id:0})
     } catch (error) {
       // Handle the error
-      console.error("Error deleting data:", error.message);
+      console.error("Error posting data:", error.message);
     }
   }
   const markersData = ref([])
@@ -82,9 +113,12 @@
     }
   })
 
-watch(markersData, ()=>{
-  getMarkers()
-})
+  watch(markersData, ()=>{
+    getMarkers()
+  })
+  watch(categoryData, ()=>{
+    getCategory()
+  })
 </script>
 
 <template>
@@ -103,9 +137,9 @@ watch(markersData, ()=>{
             <figure class="item__figure" v-if="marker.image">
               <img :src="marker.image" :alt="marker.description" class="item__img">
             </figure>
-            <label><input type="checkbox" name="isRepair" id="ieRepair" @change="updateMarker"
+            <label><input type="checkbox" name="isRepair" id="isRepair" @change="updateRepair(marker.isRepair, marker.id)"
                           v-model="marker.isRepair"> Ремонт идет</label>
-            <label><input type="checkbox" name="isValidate" id="isValidate" @change="updateMarker"
+            <label><input type="checkbox" name="isValidate" id="isValidate" @change="updateValidate(marker.isValidate, marker.id)"
                           v-model="marker.isValidate"> Валидно</label>
             <button class="item__delete" @click="deleteMarkers(marker.id, index)">✕</button>
           </div>
@@ -118,10 +152,10 @@ watch(markersData, ()=>{
         <div class="categories-list__item" v-for="(category, index) in categoryData" :key="category.id" v-if="categoryData">
           <div class="category-item" >
             <p>Название категории: {{category.name}}</p>
-            <button class="item__delete" @click="deleteCategory(category.id, index)">✕</button>
+            <button class="item__delete" @click="deleteCategory(category.id)">✕</button>
           </div>
         </div>
-        <form action="" class="add-category" @submit.prevent="addCategory">
+        <form action="" class="add-category" @submit.prevent="addCategory(categoryName)">
           <input type="text" name="newCategory" id="newCategory" class="add-category__name" placeholder="Введите название категории" v-model="categoryName" required/>
           <input type="submit" value="+" class="add-category__button"/>
         </form>
