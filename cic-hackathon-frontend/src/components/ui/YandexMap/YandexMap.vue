@@ -36,16 +36,15 @@ const initMap = async () => {
               let placemark = new maps.Placemark([marker.latitude, marker.longitude], {
                 balloonContent: `
   <div class="balloon">
-    <div class="balloon-header">
-      <h3>${marker.description} </h3>
-    </div>
     <figure>
       <img src="data:image/png;base64,${marker.image}" alt="${marker.description}">
     </figure>
+    <div class="balloon-header">
+      <h3 id="description_style">${marker.description} </h3>
+    </div>
     <div class="balloon-content">
       <p v-if="${marker.status}">Статус: ${marker.status.name}</p>
-      <p>Чинится: ${marker.isRepair ? "Да" : "Нет"}</p>
-      <p v-if="${marker.city}">Город: ${marker.city}</p>
+      <p>Ремонтируется: ${marker.isRepair ? "Да" : "Нет"}</p>
       <p v-if="${marker.userCreatedId}">Выложено пользователем ${marker.userCreatedId}</p>
       <p v-if="${marker.userCreatedId}">Метка создана: ${markerDate.getDate()}.${markerDate.getMonth() + 1}.${markerDate.getFullYear()}</p>
 
