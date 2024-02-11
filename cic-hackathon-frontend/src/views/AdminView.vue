@@ -52,11 +52,11 @@
       <div class="markers-list">
         <div class="markers-list__item" v-for="(marker, index) in markersData" :key="marker.id">
           <div class="marker-item">
-            <p class="item__description" v-if="marker.description">{{ marker.description }}</p>
-            <p class="item__city" v-if="marker.city">{{ marker.city }}</p>
+            <p class="item__description" v-if="marker.description">Описание: {{ marker.description }}</p>
+            <p class="item__city" v-if="marker.city">Город: {{ marker.city }}</p>
             <div class="item__coords" v-if="marker.latitude && marker.longitude">
-              <p class="item__latitude">{{ marker.latitude }}</p>
-              <p class="item__longitude">{{ marker.longitude }}</p>
+              <p class="item__latitude">Ширита: {{ marker.latitude }}</p>
+              <p class="item__longitude">Долгота: {{ marker.longitude }}</p>
             </div>
             <figure class="item__figure" v-if="marker.image">
               <img :src="marker.image" :alt="marker.description" class="item__img">

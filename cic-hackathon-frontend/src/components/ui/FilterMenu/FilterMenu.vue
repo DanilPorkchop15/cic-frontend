@@ -39,40 +39,44 @@ const toggleFilter = (filter: unknown) => {
 
 <style scoped>
 .filter-menu {
-  width: 200px;
-  padding: 10px;
-  background-color: #f0f0f0;
+  width: 300px;
+  padding: 16px;
+  background-color: #ffffff;
   border: 1px solid #ddd;
-  border-radius: 5px;
+  opacity: 90%;
+  border-radius: 8px;
   position: fixed;
   left: 0;
   top: 4rem;
-
+  margin-left: 36px;
+  margin-top: 36px;
 }
 
 .filter-menu__header {
-  margin-bottom: 10px;
-  font-size: 18px;
+  margin-bottom: 16pt;
+  font-size: 16pt;
   font-weight: bold;
 }
 
 .filters__item {
-  margin-bottom: 15px;
+  margin-bottom: 6pt;
 }
 
 .filter__header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  color: #2D698E;
   cursor: pointer;
 }
 
 .filter__header h4 {
   margin: 0;
+  font-size: 12pt;
 }
 
 .filter__toggle-icon {
-  font-size: 14px;
+  font-size: 8pt;
 }
 
 .filter__body {
