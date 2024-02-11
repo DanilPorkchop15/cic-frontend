@@ -129,12 +129,15 @@
         <div class="markers-list__item" v-for="(marker, index) in markersData" :key="marker.id">
           <div class="marker-item">
             <div class="item__content">
-              <div class="item__info"><p class="item__description" v-if="marker.description">Описание: {{ marker.description }}</p>
+              <div class="item__info">
+                <p class="item__description" v-if="marker.description">Описание: {{ marker.description }}</p>
                 <p class="item__city" v-if="marker.city">Город: {{ marker.city }}</p>
                 <div class="item__coords" v-if="marker.latitude && marker.longitude">
-                  <p class="item__latitude">Ширита: {{ marker.latitude }}</p>
+                  <p class="item__latitude">Широта: {{ marker.latitude }}</p>
                   <p class="item__longitude">Долгота: {{ marker.longitude }}</p>
                 </div>
+                <p class="item__description" v-if="marker.dateCreated">Дата создания: {{ marker.dateCreated.substring(0, 10) }}</p>
+                <p class="item__description" v-if="marker.userCreatedId">Автор метки: {{ marker.userCreatedId }}</p>
               </div>
               <figure class="item__figure" v-if="marker.image">
                 <img :src="`data:image/png;base64,${marker.image}`" :alt="marker.description" class="item__img">

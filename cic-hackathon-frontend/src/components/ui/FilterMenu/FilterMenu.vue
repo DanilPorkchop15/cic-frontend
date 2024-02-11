@@ -46,7 +46,7 @@ onMounted(() => {
         </div>
         <div class="filter__body" v-if="filters.type">
           <div class="" v-for="category in categoryData" :key="category.id" v-if="categoryData">
-            {{category.name}}
+            <label><input type="radio" name="category" id="filter__radio">{{category.name}}</label>
           </div>
         </div>
       </div>
