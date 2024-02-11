@@ -1,0 +1,25 @@
+.admin-page__wrapper{
+  display: grid;
+  grid-template-columns: 1fr 80dvw 1fr;
+}
+.admin-page{
+  grid-column: 2;
+  &__title{
+    padding-top: 2rem;
+  }
+}
+.markers-list{
+  margin-inline: 6px;
+  background-color: grey;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  &__item{
+    background-color: lightgrey;
+    margin-inline: 1rem;
+    .marker-item{
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}

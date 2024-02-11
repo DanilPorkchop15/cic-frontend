@@ -2,14 +2,11 @@
 import ymaps from 'ymaps'
 import {onMounted} from "vue";
 import axios from 'axios'
+import MarkerBalloon from "@/components/ui/YandexMap/MarkerBalloon/MarkerBalloon.vue";
 
 const getMarkers = async () => {
   try {
-    const response = await axios.get("/api/markers", {
-      headers: {
-        "ngrok-skip-browser-warning": "69420"
-      }
-    });
+    const response = await axios.get("/api/markers");
 
     // Process the response data
     return response.data
@@ -37,15 +34,7 @@ const initMap = () => {
           res.forEach((marker) => {
             let placemark = new maps.Placemark([marker.latitude, marker.longitude], {
               balloonContent: `
-            <div class="balloon">
-                <div class="balloon-header">
-                    <h3>${marker.description}</h3>
-                </div>
-                <div class="balloon-content">
-                    <p>Выложено пользователем ${marker.userCreatedId}</p>
-                    <router-link to="/place/1">link to place</router-link>
-                </div>
-            </div>
+              <MarkerBalloon :ma/>
           `
             }, {
               iconLayout: 'default#image',
