@@ -2,7 +2,6 @@
 import ymaps from 'ymaps'
 import {onMounted} from "vue";
 import axios from 'axios'
-import MarkerBalloon from "@/components/ui/YandexMap/MarkerBalloon/MarkerBalloon.vue";
 
 const getMarkers = async () => {
   try {
@@ -32,17 +31,31 @@ const initMap = () => {
         map.controls.remove('fullscreenControl')
         getMarkers().then(res => {
           res.forEach((marker) => {
-            let placemark = new maps.Placemark([marker.latitude, marker.longitude], {
-              balloonContent: `
-              <MarkerBalloon :ma/>
+            if (marker.isValidate) {
+              let placemark = new maps.Placemark([marker.latitude, marker.longitude], {
+                balloonContent: `
+  <div class="balloon">
+    <div class="balloon-header">
+      <h3>${marker.description} </h3>
+    </div>
+    <figure>
+      <img src="data:image/png;base64,${marker.image}" alt="${marker.description}">
+    </figure>
+    <div class="balloon-content">
+      <p v-if="${marker.status}">Статус: ${marker.status.name}</p>
+      <p>Чинится: ${marker.isRepair ? "Да" : "Нет"}</p>
+      <p v-if="${marker.city}">Город: ${marker.city}</p>
+      <p v-if="${marker.userCreatedId}">Выложено пользователем ${marker.userCreatedId}</p>
+    </div>
+  </div>
           `
-            }, {
-              iconLayout: 'default#image',
-              iconImageHref: 'https://cdn-icons-png.flaticon.com/512/6387/6387773.png',
-              iconImageSize: [40, 40]
-            });
-            map.geoObjects.add(placemark)
-
+              }, {
+                iconLayout: 'default#image',
+                iconImageHref: 'https://cdn-icons-png.flaticon.com/512/6387/6387773.png',
+                iconImageSize: [40, 40]
+              });
+              map.geoObjects.add(placemark)
+            }
           })
         })
       })
@@ -64,8 +77,4 @@ onMounted(() => {
 
 
 <style scoped>
-#map {
-  width: 100dvw ;
-  height: calc(100dvh - 4rem);
-}
 </style>

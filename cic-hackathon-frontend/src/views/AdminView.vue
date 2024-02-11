@@ -137,11 +137,11 @@
             <figure class="item__figure" v-if="marker.image">
               <img :src="marker.image" :alt="marker.description" class="item__img">
             </figure>
-            <label><input type="checkbox" name="isRepair" id="isRepair" @change="updateRepair(marker.isRepair, marker.id)"
+            <label><input type="checkbox" name="isRepair" id="isRepair" @change.stop="updateRepair(marker.isRepair, marker.id)"
                           v-model="marker.isRepair"> Ремонт идет</label>
-            <label><input type="checkbox" name="isValidate" id="isValidate" @change="updateValidate(marker.isValidate, marker.id)"
+            <label><input type="checkbox" name="isValidate" id="isValidate" @change.stop="updateValidate(marker.isValidate, marker.id)"
                           v-model="marker.isValidate"> Валидно</label>
-            <button class="item__delete" @click="deleteMarkers(marker.id, index)">✕</button>
+            <button class="item__delete" @click="deleteMarkers(marker.id)">✕</button>
           </div>
         </div>
       </div>
@@ -149,7 +149,7 @@
     <main class="admin-page">
       <h3 class="admin-page__title">Категории</h3>
       <div class="categories-list">
-        <div class="categories-list__item" v-for="(category, index) in categoryData" :key="category.id" v-if="categoryData">
+        <div class="categories-list__item" v-for="category in categoryData" :key="category.id" v-if="categoryData">
           <div class="category-item" >
             <button class="item__delete" @click="deleteCategory(category.id)">✕</button>
 
