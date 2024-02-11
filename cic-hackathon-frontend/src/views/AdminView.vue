@@ -136,7 +136,9 @@
                   <p class="item__latitude">Широта: {{ marker.latitude }}</p>
                   <p class="item__longitude">Долгота: {{ marker.longitude }}</p>
                 </div>
+
                 <p class="item__description" v-if="marker.dateCreated">Дата создания: {{ marker.dateCreated.substring(0, 10) }}</p>
+                <p class="item__description" v-if="marker.status">Дата создания: {{ marker.status.name}}</p>
                 <p class="item__description" v-if="marker.userCreatedId">Автор метки: {{ marker.userCreatedId }}</p>
               </div>
               <figure class="item__figure" v-if="marker.image">

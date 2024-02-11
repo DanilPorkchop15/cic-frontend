@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import {onMounted, ref} from 'vue';
+import {onMounted, ref, watch} from 'vue';
 import axios from "axios";
+import {useCategoryStore} from "@/stores/category.ts";
+
+const store = useCategoryStore();
 
 const categoryData = ref([])
 const getCategory = async () => {
@@ -24,29 +27,33 @@ const filters = ref({
 onMounted(() => {
   getCategory()
 })
+
 </script>
 
 <template>
   <div class="filter-menu">
     <h3 class="filter-menu__header">Меню фильтрации</h3>
     <div class="filters">
-      <div class="filters__item">
-        <div class="filter__header" @click="filters.date = !filters.date">
-          <h4>Период данных</h4>
-          <span class="filter__toggle-icon">{{ filters.date ? '▼' : '►' }}</span>
-        </div>
-        <div class="filter__body" v-if="filters.date">
-          <!-- Здесь добавьте содержимое фильтра по дате -->ччч
-        </div>
-      </div>
+<!--      <div class="filters__item">-->
+<!--        <div class="filter__header" @click="filters.date = !filters.date">-->
+<!--          <h4>Период данных</h4>-->
+<!--          <span class="filter__toggle-icon">{{ filters.date ? '▼' : '►' }}</span>-->
+<!--        </div>-->
+<!--        <div class="filter__body" v-if="filters.date">-->
+<!--          &lt;!&ndash; Здесь добавьте содержимое фильтра по дате &ndash;&gt;ччч-->
+<!--        </div>-->
+<!--      </div>-->
       <div class="filters__item">
         <div class="filter__header" @click="filters.type = !filters.type">
           <h4>Тип отметки</h4>
           <span class="filter__toggle-icon">{{ filters.type ? '▼' : '►' }}</span>
         </div>
         <div class="filter__body" v-if="filters.type">
+          <div class=""v-if="categoryData">
+            <label><input type="radio" checked name="category" id="filter__radio" class="filter__radio" @change="store.setFilter(true)">Показывать все</label>
+          </div>
           <div class="" v-for="category in categoryData" :key="category.id" v-if="categoryData">
-            <label><input type="radio" name="category" id="filter__radio">{{category.name}}</label>
+            <label><input type="radio"  name="category" id="filter__radio" class="filter__radio" @change="store.setFilter(category)">{{category.name}}</label>
           </div>
         </div>
       </div>
@@ -94,6 +101,10 @@ onMounted(() => {
 
 .filter__toggle-icon {
   font-size: 8pt;
+}
+
+.filter__radio{
+  margin: 6px;
 }
 
 

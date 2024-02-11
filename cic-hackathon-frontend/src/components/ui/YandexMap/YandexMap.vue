@@ -1,8 +1,10 @@
 <script setup>
 import ymaps from 'ymaps'
-import {onMounted} from "vue";
+import {onMounted, ref, watch} from "vue";
 import axios from 'axios'
+import {useCategoryStore} from "@/stores/category.ts";
 
+const store = useCategoryStore()
 const getMarkers = async () => {
   try {
     const response = await axios.get("/api/markers");
@@ -14,27 +16,15 @@ const getMarkers = async () => {
     console.error("Error fetching data:", error.message);
   }
 }
-const initMap = async () => {
-  await ymaps
-      .load(`https://api-maps.yandex.ru/2.1/?apikey=122d180f-61ee-4bcc-bb14-2832b1a6107b&lang=en_US`)
-      .then(maps => {
-        let map = new maps.Map('map', {
-          center: [47.1078, 39.4165],
-          zoom: 10
-        })
-        map.controls.remove('zoomControl')
-        map.controls.remove('geolocationControl')
-        map.controls.remove('rulerControl')
-        map.controls.remove('trafficControl')
-        map.controls.remove('typeSelector')
-        map.controls.remove('searchControl')
-        map.controls.remove('fullscreenControl')
-        getMarkers().then(res => {
-          res.forEach((marker) => {
-            if (marker.isValidate) {
-              const markerDate = new Date(marker.dateCreated)
-              let placemark = new maps.Placemark([marker.latitude, marker.longitude], {
-                balloonContent: `
+const displayMarkers = (map, maps) => {
+  getMarkers().then(res => {
+    map.geoObjects.removeAll()
+    res.forEach((marker) => {
+      if (marker.isValidate) {
+        if (marker.status.name === store.filter.name || store.filter === true) {
+          const markerDate = new Date(marker.dateCreated)
+          let placemark = new maps.Placemark([marker.latitude, marker.longitude], {
+            balloonContent: `
   <div class="balloon">
     <figure>
       <img src="data:image/png;base64,${marker.image}" alt="${marker.description}">
@@ -51,15 +41,36 @@ const initMap = async () => {
     </div>
   </div>
           `
-              }, {
-                iconLayout: 'default#image',
-                iconImageHref: 'https://cdn-icons-png.flaticon.com/512/6387/6387773.png',
-                iconImageSize: [40, 40]
-              });
-              map.geoObjects.add(placemark)
-            }
-          })
+          }, {
+            iconLayout: 'default#image',
+            iconImageHref: 'https://cdn-icons-png.flaticon.com/512/6387/6387773.png',
+            iconImageSize: [40, 40]
+          });
+          map.geoObjects.add(placemark)
+        }
+      }
+    })
+  })
+}
+let myMap = {}
+let map = {}
+const initMap = async () => {
+  await ymaps
+      .load(`https://api-maps.yandex.ru/2.1/?apikey=122d180f-61ee-4bcc-bb14-2832b1a6107b&lang=en_US`)
+      .then(maps => {
+        myMap = maps
+        map = new myMap.Map('map', {
+          center: [47.1078, 39.4165],
+          zoom: 10
         })
+        map.controls.remove('zoomControl')
+        map.controls.remove('geolocationControl')
+        map.controls.remove('rulerControl')
+        map.controls.remove('trafficControl')
+        map.controls.remove('typeSelector')
+        map.controls.remove('searchControl')
+        map.controls.remove('fullscreenControl')
+        displayMarkers(map, myMap)
       })
       .catch(error => {
         console.error('Failed to load Yandex Maps:', error);
@@ -69,6 +80,13 @@ const initMap = async () => {
 onMounted(() => {
   initMap();
 })
+
+
+watch(() => store.filter, () => {
+  displayMarkers(map, myMap)
+  console.log(store.filter)
+})
+
 </script>
 
 <template>
